@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MyNotes.Days.Friday"
+             Title="Friday">
+    <ContentPage.Content>
+        <StackLayout Margin="5">
+            <Entry x:Name="notificationText"
+                    Placeholder="Введите текст уведомления" />
+
+            <TimePicker x:Name="notificationTime"
+                    Time="9:00"
+                    Format="HH:mm" />
+
+            <StackLayout Orientation="Horizontal" Padding="5">
+                <Label Text="Уведомление: " HorizontalOptions="Start"
+                    VerticalTextAlignment="Center" FontSize="Small"/>
+                <CheckBox x:Name="notify" />
+                <Button Text="Добавить напоминание" FontSize="Micro"
+                    HorizontalOptions="FillAndExpand"
+                    Clicked="AddNotificationClicked" />
+            </StackLayout>
+
+            <ListView x:Name="collectionView" ItemsSource="{Binding Database}" >
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <ViewCell.ContextActions>
+                                <MenuItem Clicked="DeleteCommand" Text="Удалить" />
+                                <MenuItem Clicked="EditCommand" Text="Изменить" />
+                            </ViewCell.ContextActions>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <StackLayout Grid.Row="0" Grid.Column="0" Margin="5">
+                                    <Label HorizontalOptions="StartAndExpand" 
+                                           Text="{Binding FormatTime}"/>
+                                </StackLayout>
+
+                                <StackLayout Grid.Row="0" Grid.Column="1" Margin="5">
+                                    <Label HorizontalOptions="StartAndExpand" 
+                                        Text="{Binding NotificationText}"/>
+                                </StackLayout>
+
+                                <StackLayout Grid.Row="0" Grid.Column="2" Margin="5">
+                                    <Switch x:Name="switchNotify" OnColor="Green" 
+                                            ThumbColor="Gray"
+                                            HorizontalOptions="EndAndExpand"
+                                            IsToggled="{Binding IsNotify}"
+                                            Toggled="EditNotify" />
+                                </StackLayout>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
