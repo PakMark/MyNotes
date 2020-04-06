@@ -55,11 +55,11 @@ namespace MyNotes.Days
             // Загрузка базы данных
             var notifications = await Monday.Database.GetNotificationAsync();
             // Уведомление напоминаний.
-            Pages.NotificationsPage.CreateSystemNotifications();
+            Pages.NotificationsPage.CreateSystemNotifications("Monday");
             
             // Сортировка напоминаний по времени и передеча в ListView.
             listView.ItemsSource = notifications.OrderBy(X => X.NotificationTime)
-                                                      .OrderByDescending(X => X.IsNotify);
+                                                .OrderByDescending(X => X.IsNotify);
         }
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace MyNotes.Days
             if (notification != null)
             {
                 await database.SaveNotificationAsync(notification);
-                OnAppearing();
+                base.OnAppearing();
             }
         }
     }

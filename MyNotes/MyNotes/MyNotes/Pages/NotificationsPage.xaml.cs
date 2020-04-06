@@ -28,30 +28,34 @@ namespace MyNotes.Pages
         {
             InitializeComponent();
         }
-        
+
         /// <summary>
         /// Метод генерации уведомлений на устройстве
         /// </summary>
-        public static async void CreateSystemNotifications()
+        /// <param name="day">День напоминания</param>
+        public static async void CreateSystemNotifications(string day)
         {
             List<Notification> todayNotifications;
             string today = DateTime.Now.DayOfWeek.ToString();
-            var notifications = await days[today]();
-            // Получение сегодняшних напоминаний и передеча в listView.
-            todayNotifications = notifications.OrderBy(X => X.NotificationTime)
-                                              .OrderByDescending(X => X.IsNotify)
-                                              .TakeWhile(X => X.IsNotify == true)
-                                              .ToList();
-
-            foreach (var notification in todayNotifications)
+            if (today == day)
             {
-                // Создание времени уведомления.
-                DateTime notificationTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month,
-                    DateTime.Now.Day, notification.NotificationTime.Hours,
-                    notification.NotificationTime.Minutes, notification.NotificationTime.Seconds);
-                if (notificationTime > DateTime.Now)
-                    CrossLocalNotifications.Current.Show("Уведомление MyNotes", notification.FormatTime,
-                        notification.ID, notificationTime);
+                var notifications = await days[today]();
+                // Получение сегодняшних напоминаний и передеча в listView.
+                todayNotifications = notifications.OrderBy(X => X.NotificationTime)
+                                                  .OrderByDescending(X => X.IsNotify)
+                                                  .TakeWhile(X => X.IsNotify == true)
+                                                  .ToList();
+
+                foreach (var notification in todayNotifications)
+                {
+                    // Создание времени уведомления.
+                    DateTime notificationTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month,
+                        DateTime.Now.Day, notification.NotificationTime.Hours,
+                        notification.NotificationTime.Minutes, notification.NotificationTime.Seconds);
+                    if (notificationTime > DateTime.Now)
+                        CrossLocalNotifications.Current.Show("Уведомление MyNotes", notification.FormatTime,
+                            notification.ID, notificationTime);
+                }
             }
         }
 

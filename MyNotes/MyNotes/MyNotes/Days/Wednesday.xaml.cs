@@ -55,7 +55,7 @@ namespace MyNotes.Days
             // Загрузка базы данных
             var notifications = await Wednesday.Database.GetNotificationAsync();
             // Уведомление напоминаний.
-            Pages.NotificationsPage.CreateSystemNotifications();
+            Pages.NotificationsPage.CreateSystemNotifications("Wednesday");
 
             // Сортировка напоминаний по времени и передеча в ListView.
             listView.ItemsSource = notifications.OrderBy(X => X.NotificationTime)
@@ -72,7 +72,7 @@ namespace MyNotes.Days
             if (!string.IsNullOrWhiteSpace(notificationText.Text))
             {
                 // Сохранение напоминания в базе данных.
-                await Monday.Database.SaveNotificationAsync(new Notification
+                await Wednesday.Database.SaveNotificationAsync(new Notification
                 {
                     NotificationText = notificationText.Text,
                     NotificationTime = notificationTime.Time,
@@ -129,7 +129,7 @@ namespace MyNotes.Days
             if (notification != null)
             {
                 await database.SaveNotificationAsync(notification);
-                OnAppearing();
+                base.OnAppearing();
             }
         }
     }
