@@ -8,10 +8,6 @@ namespace MyNotes.Pages
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class EditNotificationPage : ContentPage
     {
-        public delegate void NotificationHandler();
-        // Событие при изменении напоминания.
-        public event NotificationHandler EditNotificationEvent;
-
         Database database;
         Notification oldNotification;
 
@@ -25,6 +21,11 @@ namespace MyNotes.Pages
             oldNotification = notification;
         }
 
+        /// <summary>
+        /// Метод сохранения изменений напоминания
+        /// </summary>
+        /// <param name="sender">Отправитель Button</param>
+        /// <param name="e">Событие отправителя</param>
         async void EditNotificationClicked(object sender, EventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(notificationText.Text))
@@ -34,11 +35,7 @@ namespace MyNotes.Pages
                 oldNotification.IsNotify = notify.IsChecked;
                 // Сохранение измененного напоминания.
                 await database.SaveNotificationAsync(oldNotification);
-                // Подписываем метод на событие.
-                var page = Navigation.NavigationStack[0] as MainPage;
-                EditNotificationEvent += page.UpdateNowNotifications;
-                // Вызываем событие.
-                EditNotificationEvent?.Invoke();
+
                 await DisplayAlert("Уведомление", "Напоминание успешно изменено", "OK");
                 await Navigation.PopAsync();
             }

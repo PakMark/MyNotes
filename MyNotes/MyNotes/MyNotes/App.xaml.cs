@@ -1,7 +1,6 @@
-﻿using System;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using MyNotes.Models;
+using MyNotes.Pages;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace MyNotes
@@ -12,24 +11,36 @@ namespace MyNotes
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage(new MainPage());
-        }
+            MainPage = new MainPage()
+            {
+                Children =
+                {
+                    new NavigationPage(new Pages.NotificationsPage())
+                    {
+                        Title = "Notifications"
+                    },
+                    new NavigationPage(new Pages.NotesPage())
+                    {
+                        Title = "Notes"
+                    }
+                }
 
-        public static ReminderItem SelectedModel { get; set; }
+            };
+        }
 
         protected override void OnStart()
         {
-            // Handle when your app starts
+            NotificationsPage.CreateSystemNotifications();
         }
 
         protected override void OnSleep()
         {
-            // Handle when your app sleeps
+            NotificationsPage.CreateSystemNotifications();
         }
 
         protected override void OnResume()
         {
-            // Handle when your app resumes
+            NotificationsPage.CreateSystemNotifications();
         }
     }
 }

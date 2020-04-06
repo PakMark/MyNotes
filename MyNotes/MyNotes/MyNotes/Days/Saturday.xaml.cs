@@ -10,10 +10,6 @@ namespace MyNotes.Days
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Saturday : ContentPage
     {
-        public delegate void NotificationHandler();
-        // Событие при изменении напоминания.
-        public static event NotificationHandler EditNotificationEvent;
-
         static Database database;
         /// <summary>
         /// Создание базы данных
@@ -58,13 +54,11 @@ namespace MyNotes.Days
             base.OnAppearing();
             // Загрузка базы данных
             var notifications = await Saturday.Database.GetNotificationAsync();
-            // Подписываем метод на событие.
-            var page = Navigation.NavigationStack[0] as MainPage;
-            EditNotificationEvent += page.UpdateNowNotifications;
-            // Вызываем событие.
-            EditNotificationEvent?.Invoke();
-            // Сортировка напоминаний по времени и передеча в CollectionView.
-            collectionView.ItemsSource = notifications.OrderBy(X => X.NotificationTime)
+            // Уведомление напоминаний.
+            Pages.NotificationsPage.CreateSystemNotifications();
+
+            // Сортировка напоминаний по времени и передеча в ListView.
+            listView.ItemsSource = notifications.OrderBy(X => X.NotificationTime)
                                                       .OrderByDescending(X => X.IsNotify);
         }
 
@@ -135,9 +129,8 @@ namespace MyNotes.Days
             if (notification != null)
             {
                 await database.SaveNotificationAsync(notification);
-                base.OnAppearing();
+                OnAppearing();
             }
-
         }
     }
 }

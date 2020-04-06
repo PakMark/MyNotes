@@ -21,7 +21,7 @@
                     Clicked="AddNotificationClicked" />
             </StackLayout>
 
-            <ListView x:Name="collectionView" ItemsSource="{Binding Database}" >
+            <ListView x:Name="listView" ItemsSource="{Binding Database}" >
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>

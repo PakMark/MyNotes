@@ -4,6 +4,9 @@ using SQLite;
 
 namespace MyNotes.Models
 {
+    /// <summary>
+    /// База данных напоминаний
+    /// </summary>
     public class Database
     {
         SQLiteAsyncConnection database;

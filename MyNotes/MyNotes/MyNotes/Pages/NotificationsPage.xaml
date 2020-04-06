@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MyNotes.Pages.NotificationsPage"
+             Title="MyNotes">
+    <ContentPage.Content>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <StackLayout Grid.Row="0" Grid.Column="0" Margin="5" BackgroundColor="LightGray">
+                <Label Text="Понедельник" HorizontalTextAlignment="Center"
+                       VerticalOptions="CenterAndExpand"></Label>
+                <Button Text="Изменить" Clicked="MondayClicked" VerticalOptions="EndAndExpand" 
+                            HorizontalOptions="FillAndExpand" FontSize="Small"></Button>
+            </StackLayout>
+
+            <StackLayout Grid.Row="0" Grid.Column="1" Margin="5" BackgroundColor="LightGray">
+                <Label Text="Вторник" HorizontalTextAlignment="Center"
+                       VerticalOptions="CenterAndExpand"></Label>
+                <Button Text="Изменить" Clicked="TuesdayClicked" VerticalOptions="EndAndExpand" 
+                            HorizontalOptions="FillAndExpand" FontSize="Small"></Button>
+            </StackLayout>
+
+            <StackLayout Grid.Row="1" Grid.Column="0" Margin="5" BackgroundColor="LightGray">
+                <Label Text="Среда" HorizontalTextAlignment="Center"
+                       VerticalOptions="CenterAndExpand"></Label>
+                <Button Text="Изменить" Clicked="WednesdayClicked" VerticalOptions="EndAndExpand" 
+                            HorizontalOptions="FillAndExpand" FontSize="Small"></Button>
+            </StackLayout>
+
+            <StackLayout Grid.Row="1" Grid.Column="1" Margin="5" BackgroundColor="LightGray">
+                <Label Text="Четверг" HorizontalTextAlignment="Center"
+                       VerticalOptions="CenterAndExpand"></Label>
+                <Button Text="Изменить" Clicked="ThursdayClicked" VerticalOptions="EndAndExpand" 
+                            HorizontalOptions="FillAndExpand" FontSize="Small"></Button>
+            </StackLayout>
+
+            <StackLayout Grid.Row="2" Grid.Column="0" Margin="5" BackgroundColor="LightGray">
+                <Label Text="Пятница" HorizontalTextAlignment="Center"
+                       VerticalOptions="CenterAndExpand"></Label>
+                <Button Text="Изменить" Clicked="FridayClicked" VerticalOptions="EndAndExpand"
+                            HorizontalOptions="FillAndExpand" FontSize="Small"></Button>
+            </StackLayout>
+
+            <StackLayout Grid.Row="2" Grid.Column="1" Margin="5" BackgroundColor="LightGray">
+                <Label Text="Суббота" HorizontalTextAlignment="Center"
+                       VerticalOptions="CenterAndExpand"></Label>
+                <Button Text="Изменить" Clicked="SaturdayClicked" VerticalOptions="EndAndExpand" 
+                            HorizontalOptions="FillAndExpand" FontSize="Small"></Button>
+            </StackLayout>
+
+            <StackLayout Grid.Row="3" Grid.Column="0" Margin="5" BackgroundColor="LightGray">
+                <Label Text="Воскресенье" HorizontalTextAlignment="Center"
+                       VerticalOptions="CenterAndExpand"></Label>
+                <Button Text="Изменить" Clicked="SundayClicked" VerticalOptions="EndAndExpand" 
+                            HorizontalOptions="FillAndExpand" FontSize="Small"></Button>
+            </StackLayout>
+
+            <StackLayout Grid.Row="3" Grid.Column="1" Margin="5" BackgroundColor="LightGray">
+                <Label Text="Настройки" HorizontalTextAlignment="Center"
+                       VerticalOptions="CenterAndExpand"></Label>
+                <Button Text="Изменить" Clicked="SettingsClicked" VerticalOptions="EndAndExpand" 
+                            HorizontalOptions="FillAndExpand" FontSize="Small"></Button>
+                <!--<StackLayout Orientation="Horizontal">
+                    <Label x:Name="todayLabel" Margin="5" HorizontalOptions="StartAndExpand"
+                           VerticalTextAlignment="Center" FontSize="Micro"/>
+                    <Button Text="Уведомление" Clicked="NotificationButtonClicked"
+                        HorizontalOptions="FillAndExpand" FontSize="Micro"/>
+                </StackLayout>
+
+                <ListView x:Name="listView" VerticalScrollBarVisibility="Never">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout Orientation="Horizontal" Padding="5">
+                                    <Label Text="{Binding FormatTime}" />
+                                    <Label Text="{Binding NotificationText}" />
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>-->
+            </StackLayout>
+        </Grid>
+
+    </ContentPage.Content>
+</ContentPage>

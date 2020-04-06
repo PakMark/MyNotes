@@ -3,6 +3,9 @@ using SQLite;
 
 namespace MyNotes.Models
 {
+    /// <summary>
+    /// Класс напоминания
+    /// </summary>
     public class Notification
     {
         [PrimaryKey, AutoIncrement]
@@ -12,10 +15,5 @@ namespace MyNotes.Models
         public bool IsNotify { get; set; }
 
         public string FormatTime => $"{NotificationTime.ToString(@"hh\:mm")}";
-
-        public override string ToString()
-        {
-            return $"{NotificationTime.Hours}:{NotificationTime.Minutes} {NotificationText}";
-        }
     }
 }
