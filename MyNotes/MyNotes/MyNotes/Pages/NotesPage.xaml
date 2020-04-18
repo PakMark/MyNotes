@@ -9,7 +9,12 @@
                     HorizontalOptions="FillAndExpand" FontSize="Micro"
                     Clicked="AddNoteClicked" />
 
-            <CollectionView x:Name="listView" ItemsSource="{Binding Database}">
+            <CollectionView x:Name="listView" ItemsSource="{Binding Database}" Margin="5">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="10">
+                    </LinearItemsLayout>
+                </CollectionView.ItemsLayout>
+                
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <SwipeView x:Name="swipeView">
@@ -28,8 +33,7 @@
                                         Invoked="EditCommand" />
                                 </SwipeItems>
                             </SwipeView.RightItems>
-                            <StackLayout BackgroundColor="LightGray" Padding="5, 5, 5, 10"
-                                         Margin="0, 10, 0, 0">
+                            <StackLayout BackgroundColor="LightGray" Padding="5">
                                 <Label Text="{Binding NoteText}" LineBreakMode="WordWrap" 
                                        FontSize="Medium"/>
                             </StackLayout>

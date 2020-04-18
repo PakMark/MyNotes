@@ -130,6 +130,7 @@ namespace MyNotes.Days
             {
                 await database.SaveNotificationAsync(notification);
                 base.OnAppearing();
+                Pages.NotificationsPage.CreateSystemNotifications("Thursday");
             }
         }
     }

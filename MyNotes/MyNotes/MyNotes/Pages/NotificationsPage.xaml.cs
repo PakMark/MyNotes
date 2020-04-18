@@ -51,9 +51,10 @@ namespace MyNotes.Pages
                     // Создание времени уведомления.
                     DateTime notificationTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month,
                         DateTime.Now.Day, notification.NotificationTime.Hours,
-                        notification.NotificationTime.Minutes, notification.NotificationTime.Seconds);
+                        notification.NotificationTime.Minutes, 0);
                     if (notificationTime > DateTime.Now)
-                        CrossLocalNotifications.Current.Show("Уведомление MyNotes", notification.FormatTime,
+                        CrossLocalNotifications.Current.Show("Уведомление MyNotes", 
+                            $"{notification.FormatTime} {notification.NotificationText}",
                             notification.ID, notificationTime);
                 }
             }
