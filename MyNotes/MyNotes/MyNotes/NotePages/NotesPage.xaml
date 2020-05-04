@@ -72,7 +72,7 @@
                 <Button Text="Изменить" Clicked="SettingsClicked" VerticalOptions="EndAndExpand" 
                         HorizontalOptions="FillAndExpand" FontSize="Small"></Button>-->
                 <StackLayout Orientation="Horizontal">
-                    <Label x:Name="todayLabel" Margin="5" HorizontalOptions="StartAndExpand"
+                    <Label x:Name="todayLabel" Margin="5" HorizontalOptions="CenterAndExpand"
                         VerticalTextAlignment="Center" FontSize="Micro"/>
                 </StackLayout>
 

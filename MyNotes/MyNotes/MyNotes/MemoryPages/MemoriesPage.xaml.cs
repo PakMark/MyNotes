@@ -65,6 +65,7 @@ namespace MyNotes.Pages
             var memory = (Memory)menuItem.BindingContext;
             // Удаление записи.
             await database.DeleteMemoryAsync(memory.ID);
+            DependencyService.Get<IMessage>().ShortAlert("Запись успешно удалена");
             OnAppearing();
         }
 

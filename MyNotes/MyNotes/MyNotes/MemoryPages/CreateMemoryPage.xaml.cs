@@ -28,7 +28,7 @@ namespace MyNotes.Pages
                     MemoryText = memoryEditor.Text
                 });
                 memoryEditor.Text = string.Empty;
-                await DisplayAlert("Уведомление", "Запись успешно сохранена", "OK");
+                DependencyService.Get<IMessage>().ShortAlert("Запись успешно сохранена");
                 await Navigation.PopAsync();
             }
             else

@@ -12,6 +12,10 @@ namespace MyNotes.Days
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Friday : ContentPage
     {
+        public delegate void NoteHandler();
+        // Событие при изменении заметок.
+        public static event NoteHandler EditNoteEvent;
+
         static NotesDatabase database;
         /// <summary>
         /// Создание базы данных
@@ -50,12 +54,19 @@ namespace MyNotes.Days
             base.OnAppearing();
             // Загрузка базы данных.
             var notes = await Friday.Database.GetNotesAsync();
+
+            // Подписываем метод на событие.
+            var page = Navigation.NavigationStack[0] as NotesPage;
+            EditNoteEvent += page.UpdateNowNotes;
+            // Вызываем событие.
+            EditNoteEvent?.Invoke();
+
             // Подготовка уведомлений.
             NotesPage.CreateSystemNotifications("Friday");
 
             // Сортировка заметок по времени и передеча в ListView.
             listView.ItemsSource = notes.OrderBy(X => X.NotificationTime)
-                                                .OrderByDescending(X => X.IsNotify);
+                                        .OrderByDescending(X => X.IsNotify);
         }
 
         /// <summary>
@@ -75,6 +86,7 @@ namespace MyNotes.Days
                     IsNotify = notify.IsChecked
                 });
                 noteText.Text = string.Empty;
+                DependencyService.Get<IMessage>().ShortAlert("Заметка создана");
                 OnAppearing();
             }
             else
@@ -96,6 +108,7 @@ namespace MyNotes.Days
             CrossLocalNotifications.Current.Cancel(note.ID);
             // Удаление заметки.
             await database.DeleteNote(note.ID);
+            DependencyService.Get<IMessage>().ShortAlert("Заметка удалена");
             OnAppearing();
         }
 

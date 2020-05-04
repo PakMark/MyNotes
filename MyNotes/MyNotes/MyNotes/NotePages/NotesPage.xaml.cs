@@ -39,7 +39,7 @@ namespace MyNotes.NotePages
             List<Note> todayEnabledNotes;
             List<Note> todayDisabledNotes;
             string today = DateTime.Now.DayOfWeek.ToString();
-            if (today == day)
+            if (day == today)
             {
                 var notes = await days[today]();
                 // Получение сегодняшних заметок, о которых нужно напомнить.
@@ -60,17 +60,49 @@ namespace MyNotes.NotePages
                         DateTime.Now.Day, note.NotificationTime.Hours, note.NotificationTime.Minutes, 0);
                     // Проверка времени.
                     if (notificationTime > DateTime.Now)
-                        CrossLocalNotifications.Current.Show("Уведомление MyNotes", 
+                        CrossLocalNotifications.Current.Show("Уведомление MyNotes",
                             $"{note.FormatTime} {note.NoteText}",
                             note.ID, notificationTime);
                 }
 
                 // Удаление уведомлений.
-                foreach(var note in todayDisabledNotes)
+                foreach (var note in todayDisabledNotes)
                 {
                     CrossLocalNotifications.Current.Cancel(note.ID);
                 }
+                DependencyService.Get<IMessage>().ShortAlert("Уведомления подготовлены");
+                CrossLocalNotifications.Current.Show("Уведомление MyNotes", "Уведомления подготовлены");
             }
+        }
+
+        /// <summary>
+        /// Список заметок на сегодня
+        /// </summary>
+        List<Note> todayNotes;
+
+        /// <summary>
+        /// Метод повторного обновления сегодняшних заметок
+        /// </summary>
+        public void UpdateNowNotes()
+        {
+            string today = DateTime.Now.DayOfWeek.ToString();
+            todayLabel.Text = today;
+            GetTodayNotes(today);
+        }
+
+        /// <summary>
+        /// Метод получения сегодняшних заметок
+        /// </summary>
+        /// <param name="today">День недели</param>
+        async void GetTodayNotes(string today)
+        {
+            var notes = await days[today]();
+            // Получение сегодняшних заметок и передеча в listView.
+            todayNotes = notes.OrderBy(X => X.NotificationTime)
+                              .OrderByDescending(X => X.IsNotify)
+                              .TakeWhile(X => X.IsNotify == true)
+                              .ToList();
+            listView.ItemsSource = todayNotes;
         }
 
         async private void MondayClicked(object sender, EventArgs e)

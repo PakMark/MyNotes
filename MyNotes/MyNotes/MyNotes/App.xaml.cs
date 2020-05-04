@@ -29,18 +29,15 @@ namespace MyNotes
 
             };
 
-            MessagingCenter.Subscribe<string>(this, "CreateSystemNotifications" , (e) =>
-            {
-                Device.BeginInvokeOnMainThread(() =>
-                {
-                    NotesPage.CreateSystemNotifications(e);
-                });
-            });
+            
         }
 
         protected override void OnStart()
         {
-            //NotesPage.CreateSystemNotifications();
+            MessagingCenter.Subscribe<string>(this, "CreateSystemNotifications", (e) =>
+            {
+                NotesPage.CreateSystemNotifications(e);
+            });
         }
 
         protected override void OnSleep()

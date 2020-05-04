@@ -31,8 +31,7 @@ namespace MyNotes.Pages
                 newMemory.MemoryText = memoryEditor.Text;
                 // Сохранение измененной записи.
                 await database.SaveMemoryAsync(newMemory);
-                
-                await DisplayAlert("Уведомление", "Запись успешно изменена", "OK");
+                DependencyService.Get<IMessage>().ShortAlert("Запись успешно изменена");
                 await Navigation.PopAsync();
             }
             else

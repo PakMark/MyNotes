@@ -9,6 +9,10 @@ namespace MyNotes.NotePages
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class EditNotePage : ContentPage
     {
+        public delegate void NoteHandler();
+        // Событие при изменении заметок.
+        public static event NoteHandler EditNoteEvent;
+
         NotesDatabase database;
         Note newNote;
 
@@ -38,7 +42,12 @@ namespace MyNotes.NotePages
                 // Сохранение измененной заметки.
                 await database.SaveNoteAsync(newNote);
 
-                await DisplayAlert("Уведомление", "Заметка успешно изменена", "OK");
+                // Подписываем метод на событие.
+                var page = Navigation.NavigationStack[0] as NotesPage;
+                EditNoteEvent += page.UpdateNowNotes;
+                // Вызываем событие.
+                EditNoteEvent?.Invoke();
+                DependencyService.Get<IMessage>().ShortAlert("Заметка успешно изменена");
                 await Navigation.PopAsync();
             }
             else

@@ -3,6 +3,7 @@ using Android.Content;
 using Android.OS;
 using Xamarin.Forms;
 using System;
+using Android.Widget;
 
 namespace MyNotes.Droid
 {
@@ -27,13 +28,13 @@ namespace MyNotes.Droid
 
         public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
         {
-            Device.StartTimer(new TimeSpan(00, 00, 00), () =>
+            Device.StartTimer(TimeSpan.FromMinutes(1), () =>
             {
-                MessagingCenter.Send<string>("CreateSystemNotifications", GetTomorrow());
+                MessagingCenter.Send<string>("CreateSystemNotifications", DateTime.Now.DayOfWeek.ToString());
                 return true;
             });
 
-            return StartCommandResult.RedeliverIntent;
+            return StartCommandResult.Sticky;
         }
 
         
