@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyNotes.Android", "MyNotes\MyNotes.Android\MyNotes.Android.csproj", "{BF8C29D0-DC2A-4AF0-A33B-57A2FB479687}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyNotes", "MyNotes\MyNotes\MyNotes.csproj", "{44952CB6-FC9E-4CDB-A42A-A6653ACC22B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyNotes", "MyNotes\MyNotes\MyNotes.csproj", "{44952CB6-FC9E-4CDB-A42A-A6653ACC22B8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

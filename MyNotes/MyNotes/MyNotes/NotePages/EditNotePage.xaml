@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MyNotes.NotePages.EditNotePage"
+             Title="Изменение заметки">
+    <ContentPage.Content>
+        <StackLayout Margin="5">
+            <Entry x:Name="noteText" />
+            <TimePicker x:Name="notificationTime"
+                    Format="HH:mm" />
+            <StackLayout Orientation="Horizontal" Padding="5">
+                <Label Text="Уведомление: " HorizontalOptions="Start"
+                    VerticalTextAlignment="Center" FontSize="Small"/>
+                <CheckBox x:Name="notify"/>
+                <Button Text="Изменить заметку"
+                    HorizontalOptions="FillAndExpand"
+                    Clicked="EditNoteClicked" FontSize="Micro"/>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -4,38 +4,29 @@ using System.IO;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using MyNotes.Models;
+using Plugin.LocalNotifications;
+using MyNotes.NotePages;
 
 namespace MyNotes.Days
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Sunday : ContentPage
     {
-        static Database database;
+        static NotesDatabase database;
         /// <summary>
         /// Создание базы данных
         /// </summary>
-        public static Database Database
+        public static NotesDatabase Database
         {
             get
             {
                 if (database == null)
                 {
-                    database = new Database(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder
-                        .LocalApplicationData), "SundayNotifications.db3"));
+                    database = new NotesDatabase(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder
+                        .LocalApplicationData), "SundayNotes.db3"));
                 }
                 return database;
             }
-        }
-
-        /// <summary>
-        /// Метод проверки базы данных на пустоту
-        /// </summary>
-        /// <returns>Индикатор пустоты</returns>
-        static bool IsDatabaseEmpty()
-        {
-            int quantity = database.GetQuantityNotifications().Result;
-            if (quantity == 0) return true;
-            return false;
         }
 
         /// <summary>
@@ -44,6 +35,11 @@ namespace MyNotes.Days
         public Sunday()
         {
             InitializeComponent();
+            // Команда для обновления списка заметок.
+            listView.RefreshCommand = new Command(() => {
+                OnAppearing();
+                listView.IsRefreshing = false;
+            });
         }
 
         /// <summary>
@@ -52,43 +48,43 @@ namespace MyNotes.Days
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-            // Загрузка базы данных
-            var notifications = await Sunday.Database.GetNotificationAsync();
-            // Уведомление напоминаний.
-            Pages.NotificationsPage.CreateSystemNotifications("Sunday");
+            // Загрузка базы данных.
+            var notes = await Sunday.Database.GetNotesAsync();
+            // Подготовка уведомлений.
+            NotesPage.CreateSystemNotifications("Sunday");
 
-            // Сортировка напоминаний по времени и передеча в ListView.
-            listView.ItemsSource = notifications.OrderBy(X => X.NotificationTime)
-                                                      .OrderByDescending(X => X.IsNotify);
+            // Сортировка заметок по времени и передеча в ListView.
+            listView.ItemsSource = notes.OrderBy(X => X.NotificationTime)
+                                                .OrderByDescending(X => X.IsNotify);
         }
 
         /// <summary>
-        /// Обработчик кнопки "Добавить напоминание"
+        /// Обработчик кнопки "Добавить заметку"
         /// </summary>
         /// <param name="sender">Отправитель Button</param>
         /// <param name="e">Событие</param>
-        async void AddNotificationClicked(object sender, EventArgs e)
+        async void AddNoteClicked(object sender, EventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(notificationText.Text))
+            if (!string.IsNullOrWhiteSpace(noteText.Text))
             {
-                // Сохранение напоминания в базе данных.
-                await Sunday.Database.SaveNotificationAsync(new Notification
+                // Сохранение заметки в базе данных.
+                await Sunday.Database.SaveNoteAsync(new Note
                 {
-                    NotificationText = notificationText.Text,
+                    NoteText = noteText.Text,
                     NotificationTime = notificationTime.Time,
                     IsNotify = notify.IsChecked
                 });
-                notificationText.Text = string.Empty;
+                noteText.Text = string.Empty;
                 OnAppearing();
             }
             else
             {
-                await DisplayAlert("Предупреждение!", "Нет текста напоминания!!!", "ОК");
+                await DisplayAlert("Предупреждение!", "Нет заметки!!!", "ОК");
             }
         }
 
         /// <summary>
-        /// Метод удаления напоминания.
+        /// Команда удаления заметки.
         /// </summary>
         /// <param name="sender">Отправитель SwipeView</param>
         /// <param name="e">Событие</param>
@@ -96,14 +92,15 @@ namespace MyNotes.Days
         {
             // Обработка выбранного объекта SwipeView.
             MenuItem menuItem = sender as MenuItem;
-            var notification = (Notification)menuItem.BindingContext;
-            // Удаление напоминания.
-            await database.DeleteNotification(notification.ID);
+            var note = (Note)menuItem.BindingContext;
+            CrossLocalNotifications.Current.Cancel(note.ID);
+            // Удаление заметки.
+            await database.DeleteNote(note.ID);
             OnAppearing();
         }
 
         /// <summary>
-        /// Метод изменения напоминания
+        /// Команда изменения заметки
         /// </summary>
         /// <param name="sender">Отправитель SwipeView</param>
         /// <param name="e">Событие</param>
@@ -111,9 +108,9 @@ namespace MyNotes.Days
         {
             // Обработка выбранного объекта SwipeView.
             MenuItem menuItem = sender as MenuItem;
-            var notification = (Notification)menuItem.BindingContext;
-            // Вызов новой страницы для изменения напоминания.
-            await Navigation.PushAsync(new Pages.EditNotificationPage(ref notification, Database));
+            var note = (Note)menuItem.BindingContext;
+            // Вызов новой страницы для изменения заметки.
+            await Navigation.PushAsync(new EditNotePage(ref note, Database));
             OnAppearing();
         }
 
@@ -125,12 +122,13 @@ namespace MyNotes.Days
         async void EditNotify(object sender, ToggledEventArgs e)
         {
             Switch sw = sender as Switch;
-            Notification notification = (Notification)sw.BindingContext;
-            if (notification != null)
+            Note note = (Note)sw.BindingContext;
+            if (note != null)
             {
-                await database.SaveNotificationAsync(notification);
+                if (!note.IsNotify) CrossLocalNotifications.Current.Cancel(note.ID);
+                await database.SaveNoteAsync(note);
                 base.OnAppearing();
-                Pages.NotificationsPage.CreateSystemNotifications("Sunday");
+                NotesPage.CreateSystemNotifications("Sunday");
             }
         }
     }

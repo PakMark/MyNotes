@@ -1,5 +1,6 @@
 ﻿using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using MyNotes.NotePages;
 using MyNotes.Pages;
 using System;
 
@@ -16,32 +17,40 @@ namespace MyNotes
             {
                 Children =
                 {
-                    new NavigationPage(new Pages.NotificationsPage())
+                    new NavigationPage(new NotesPage())
                     {
-                        Title = "Notifications"
+                        Title = "Заметки"
                     },
-                    new NavigationPage(new Pages.NotesPage())
+                    new NavigationPage(new MemoriesPage())
                     {
-                        Title = "Notes"
+                        Title = "Записи"
                     }
                 }
 
             };
+
+            MessagingCenter.Subscribe<string>(this, "CreateSystemNotifications" , (e) =>
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    NotesPage.CreateSystemNotifications(e);
+                });
+            });
         }
 
         protected override void OnStart()
         {
-            //NotificationsPage.CreateSystemNotifications();
+            //NotesPage.CreateSystemNotifications();
         }
 
         protected override void OnSleep()
         {
-            NotificationsPage.CreateSystemNotifications(DateTime.Now.DayOfWeek.ToString());
+            NotesPage.CreateSystemNotifications(DateTime.Now.DayOfWeek.ToString());
         }
 
         protected override void OnResume()
         {
-            NotificationsPage.CreateSystemNotifications(DateTime.Now.DayOfWeek.ToString());
+            NotesPage.CreateSystemNotifications(DateTime.Now.DayOfWeek.ToString());
         }
     }
 }

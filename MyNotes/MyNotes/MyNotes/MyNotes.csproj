@@ -16,19 +16,37 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Pages\CreateNotePage.xaml">
+    <Compile Update="MemoryPages\CreateMemoryPage.xaml.cs">
+      <DependentUpon>CreateMemoryPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="MemoryPages\EditMemoryPage.xaml.cs">
+      <DependentUpon>EditMemoryPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="MemoryPages\MemoriesPage.xaml.cs">
+      <DependentUpon>MemoriesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="NotePages\EditNotePage.xaml.cs">
+      <DependentUpon>EditNotePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="NotePages\NotesPage.xaml.cs">
+      <DependentUpon>NotesPage.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="MemoryPages\CreateMemoryPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Pages\EditNotePage.xaml">
+    <EmbeddedResource Update="MemoryPages\EditMemoryPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Pages\EditNotificationPage.xaml">
+    <EmbeddedResource Update="NotePages\EditNotePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Pages\NotesPage.xaml">
+    <EmbeddedResource Update="MemoryPages\MemoriesPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Pages\NotificationsPage.xaml">
+    <EmbeddedResource Update="NotePages\NotesPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
