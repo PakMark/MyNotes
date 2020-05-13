@@ -29,25 +29,37 @@ namespace MyNotes
 
             };
 
-            
+
         }
 
         protected override void OnStart()
         {
+            MyNotifications.GenerateNotifications(DateTime.Now.DayOfWeek.ToString(), GetTomorrow());
             MessagingCenter.Subscribe<string>(this, "CreateSystemNotifications", (e) =>
             {
-                NotesPage.CreateSystemNotifications(e);
+                MyNotifications.GenerateNotifications(e, GetTomorrow());
             });
         }
 
         protected override void OnSleep()
         {
-            NotesPage.CreateSystemNotifications(DateTime.Now.DayOfWeek.ToString());
+            MyNotifications.GenerateNotifications(DateTime.Now.DayOfWeek.ToString(), GetTomorrow());
         }
 
         protected override void OnResume()
         {
-            NotesPage.CreateSystemNotifications(DateTime.Now.DayOfWeek.ToString());
+            // Handle when your app resumes.
+        }
+
+        /// <summary>
+        /// Метод определения завтрашнего дня
+        /// </summary>
+        /// <returns>Завтрашний день</returns>
+        string GetTomorrow()
+        {
+            int numberToday = (int)DateTime.Now.DayOfWeek;
+            string[] days = { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
+            return days[(++numberToday) % 7];
         }
     }
 }

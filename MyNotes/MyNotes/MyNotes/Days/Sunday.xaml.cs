@@ -4,7 +4,7 @@ using System.IO;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using MyNotes.Models;
-using Plugin.LocalNotifications;
+using Plugin.LocalNotification;
 using MyNotes.NotePages;
 
 namespace MyNotes.Days
@@ -62,11 +62,11 @@ namespace MyNotes.Days
             EditNoteEvent?.Invoke();
 
             // Подготовка уведомлений.
-            NotesPage.CreateSystemNotifications("Sunday");
+            MyNotifications.GenerateNotifications("Sunday");
 
             // Сортировка заметок по времени и передеча в ListView.
-            listView.ItemsSource = notes.OrderBy(X => X.NotificationTime)
-                                        .OrderByDescending(X => X.IsNotify);
+            listView.ItemsSource = notes.OrderBy(x => x.NotificationTime)
+                                        .OrderByDescending(x => x.IsNotify);
         }
 
         /// <summary>
@@ -105,9 +105,9 @@ namespace MyNotes.Days
             // Обработка выбранного объекта SwipeView.
             MenuItem menuItem = sender as MenuItem;
             var note = (Note)menuItem.BindingContext;
-            CrossLocalNotifications.Current.Cancel(note.ID);
+            NotificationCenter.Current.Cancel(note.ID);
             // Удаление заметки.
-            await database.DeleteNote(note.ID);
+            await database.DeleteNoteAsync(note.ID);
             DependencyService.Get<IMessage>().ShortAlert("Заметка удалена");
             OnAppearing();
         }
@@ -138,10 +138,10 @@ namespace MyNotes.Days
             Note note = (Note)sw.BindingContext;
             if (note != null)
             {
-                if (!note.IsNotify) CrossLocalNotifications.Current.Cancel(note.ID);
+                if (!note.IsNotify) NotificationCenter.Current.Cancel(note.ID);
                 await database.SaveNoteAsync(note);
                 base.OnAppearing();
-                NotesPage.CreateSystemNotifications("Sunday");
+                MyNotifications.GenerateNotifications("Sunday");
             }
         }
     }

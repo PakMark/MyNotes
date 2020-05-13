@@ -4,7 +4,6 @@
              x:Class="MyNotes.NotePages.NotesPage"
              Title="MyNotes">
     <ContentPage.Content>
-
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
@@ -17,60 +16,56 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <StackLayout Grid.Row="0" Grid.Column="0" Margin="5" BackgroundColor="LightGray">
+            <StackLayout Grid.Row="0" Grid.Column="0" Margin="5, 5, 0, 0" BackgroundColor="LightGray">
                 <Label Text="Понедельник" HorizontalTextAlignment="Center"
                     VerticalOptions="CenterAndExpand"></Label>
                 <Button Text="Изменить" Clicked="MondayClicked" VerticalOptions="EndAndExpand" 
                     HorizontalOptions="FillAndExpand" FontSize="Small"></Button>
             </StackLayout>
 
-            <StackLayout Grid.Row="0" Grid.Column="1" Margin="5" BackgroundColor="LightGray">
+            <StackLayout Grid.Row="0" Grid.Column="1" Margin="0, 5, 5, 0" BackgroundColor="LightGray">
                 <Label Text="Вторник" HorizontalTextAlignment="Center"
                     VerticalOptions="CenterAndExpand"></Label>
                 <Button Text="Изменить" Clicked="TuesdayClicked" VerticalOptions="EndAndExpand" 
                     HorizontalOptions="FillAndExpand" FontSize="Small"></Button>
             </StackLayout>
 
-            <StackLayout Grid.Row="1" Grid.Column="0" Margin="5" BackgroundColor="LightGray">
+            <StackLayout Grid.Row="1" Grid.Column="0" Margin="5, 0, 0, 0" BackgroundColor="LightGray">
                 <Label Text="Среда" HorizontalTextAlignment="Center"
                     VerticalOptions="CenterAndExpand"></Label>
                 <Button Text="Изменить" Clicked="WednesdayClicked" VerticalOptions="EndAndExpand" 
                     HorizontalOptions="FillAndExpand" FontSize="Small"></Button>
             </StackLayout>
 
-            <StackLayout Grid.Row="1" Grid.Column="1" Margin="5" BackgroundColor="LightGray">
+            <StackLayout Grid.Row="1" Grid.Column="1" Margin="0, 0, 5, 0" BackgroundColor="LightGray">
                 <Label Text="Четверг" HorizontalTextAlignment="Center"
                     VerticalOptions="CenterAndExpand"></Label>
                 <Button Text="Изменить" Clicked="ThursdayClicked" VerticalOptions="EndAndExpand" 
                     HorizontalOptions="FillAndExpand" FontSize="Small"></Button>
             </StackLayout>
 
-            <StackLayout Grid.Row="2" Grid.Column="0" Margin="5" BackgroundColor="LightGray">
+            <StackLayout Grid.Row="2" Grid.Column="0" Margin="5, 0, 0, 0" BackgroundColor="LightGray">
                 <Label Text="Пятница" HorizontalTextAlignment="Center"
                     VerticalOptions="CenterAndExpand"></Label>
                 <Button Text="Изменить" Clicked="FridayClicked" VerticalOptions="EndAndExpand"
                     HorizontalOptions="FillAndExpand" FontSize="Small"></Button>
             </StackLayout>
 
-            <StackLayout Grid.Row="2" Grid.Column="1" Margin="5" BackgroundColor="LightGray">
+            <StackLayout Grid.Row="2" Grid.Column="1" Margin="0, 0, 5, 0" BackgroundColor="LightGray">
                 <Label Text="Суббота" HorizontalTextAlignment="Center"
                     VerticalOptions="CenterAndExpand"></Label>
                 <Button Text="Изменить" Clicked="SaturdayClicked" VerticalOptions="EndAndExpand" 
                     HorizontalOptions="FillAndExpand" FontSize="Small"></Button>
             </StackLayout>
 
-            <StackLayout Grid.Row="3" Grid.Column="0" Margin="5" BackgroundColor="LightGray">
+            <StackLayout Grid.Row="3" Grid.Column="0" Margin="5, 0, 0, 5" BackgroundColor="LightGray">
                 <Label Text="Воскресенье" HorizontalTextAlignment="Center"
                     VerticalOptions="CenterAndExpand"></Label>
                 <Button Text="Изменить" Clicked="SundayClicked" VerticalOptions="EndAndExpand" 
                     HorizontalOptions="FillAndExpand" FontSize="Small"></Button>
             </StackLayout>
 
-            <StackLayout Grid.Row="3" Grid.Column="1" Margin="5" BackgroundColor="LightGray">
-                <!--<Label Text="Настройки" HorizontalTextAlignment="Center"
-                        VerticalOptions="CenterAndExpand"></Label>
-                <Button Text="Изменить" Clicked="SettingsClicked" VerticalOptions="EndAndExpand" 
-                        HorizontalOptions="FillAndExpand" FontSize="Small"></Button>-->
+            <StackLayout Grid.Row="3" Grid.Column="1" Margin="0, 0, 5, 5" BackgroundColor="LightGray">
                 <StackLayout Orientation="Horizontal">
                     <Label x:Name="todayLabel" Margin="5" HorizontalOptions="CenterAndExpand"
                         VerticalTextAlignment="Center" FontSize="Micro"/>
@@ -81,16 +76,31 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
-                                <StackLayout Orientation="Horizontal" Padding="5">
-                                    <Label Text="{Binding FormatTime}" />
-                                    <Label Text="{Binding NoteText}" />
-                                </StackLayout>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackLayout Grid.Row="0" Grid.Column="0" Padding="5">
+                                        <Label HorizontalOptions="StartAndExpand" 
+                                           Text="{Binding FormatTime}"/>
+                                    </StackLayout>
+
+                                    <StackLayout Grid.Row="0" Grid.Column="1" Padding="5">
+                                        <Label HorizontalOptions="StartAndExpand" 
+                                        Text="{Binding NoteText}"/>
+                                    </StackLayout>
+
+                                </Grid>
                             </ViewCell>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
             </StackLayout>
         </Grid>
-
     </ContentPage.Content>
 </ContentPage>

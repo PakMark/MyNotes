@@ -10,9 +10,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Plugin.LocalNotification" Version="4.1.4" />
     <PackageReference Include="sqlite-net-pcl" Version="1.6.292" />
-    <PackageReference Include="Xam.Plugins.Notifier" Version="3.0.1" />
-    <PackageReference Include="Xamarin.Forms" Version="4.5.0.530" />
+    <PackageReference Include="Xamarin.Forms" Version="4.6.0.726" />
   </ItemGroup>
 
   <ItemGroup>

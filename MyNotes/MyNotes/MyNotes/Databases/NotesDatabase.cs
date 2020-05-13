@@ -49,7 +49,7 @@ namespace MyNotes.Models
         /// </summary>
         /// <param name="id">ID заметки</param>
         /// <returns>База данных с удаленной заметкой</returns>
-        public Task<int> DeleteNote(int id)
+        public Task<int> DeleteNoteAsync(int id)
         {
             return database.DeleteAsync<Note>(id);
         }

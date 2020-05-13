@@ -5,13 +5,13 @@
              Title="Понедельник">
     <ContentPage.Content>
         <StackLayout Margin="5">
-            <Entry x:Name="noteText"
+            <Entry x:Name="noteText" MaxLength="32"
                 Placeholder="Введите текст заметки" />
-            
+
             <TimePicker x:Name="notificationTime"
                 Time="9:00"
                 Format="HH:mm" />
-            
+
             <StackLayout Orientation="Horizontal" Padding="5">
                 <Label Text="Уведомление: " HorizontalOptions="Start"
                     VerticalTextAlignment="Center" FontSize="Small"/>
@@ -35,9 +35,9 @@
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
 
                                 <StackLayout Grid.Row="0" Grid.Column="0" Margin="5">

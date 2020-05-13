@@ -2,37 +2,43 @@
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
-using Plugin.LocalNotifications;
-using System;
+using Plugin.LocalNotification;
 
 namespace MyNotes.Droid
 {
-    [Activity(Label = "MyNotes", Icon = "@drawable/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation, ScreenOrientation = ScreenOrientation.Portrait)]
+    [Activity(Label = "MyNotes", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true,
+        ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation,
+        ScreenOrientation = ScreenOrientation.Portrait, LaunchMode = LaunchMode.SingleTop)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
+            // Для корректной работы элемента SwipeView.
             Xamarin.Forms.Forms.SetFlags("SwipeView_Experimental");
-
-            this.StartService(new Intent(this, typeof(PeriodicService)));
-
-
-            //var alarmIntent = new Intent(this, typeof(BackgroundReceiver));
-
-            //var pending = PendingIntent.GetBroadcast(this, 0, alarmIntent, PendingIntentFlags.UpdateCurrent);
-
-            //var alarmManager = GetSystemService(AlarmService).JavaCast<AlarmManager>();
-            //alarmManager.Set(AlarmType.ElapsedRealtime, SystemClock.ElapsedRealtime() + 3 * 1000, pending);
-
-            LocalNotificationsImplementation.NotificationIconId = Resource.Drawable.icon;
-            // PeriodicWorkRequest taxWorkRequest = PeriodicWorkRequest.Builder.From<NotificationWorker>(new TimeSpan(00,00,00)).Build();
+            // Определяем сервис.
+            Intent startServiceIntent = new Intent(this, typeof(MyNotesService));
+            startServiceIntent.SetAction("MyNotes.action.START_SERVICE");
+            // Для операционных систем Андроид 8.0 и выше.
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
+            {
+                // Создаем канал уведомления.
+                NotificationCenter.CreateNotificationChannel(
+                    new Plugin.LocalNotification.Platform.Droid.NotificationChannelRequest
+                    {
+                        Id = $"myNotificationsChannel",
+                        Name = "General",
+                        Description = "General",
+                    });
+                // Запускаем сервис.
+                StartForegroundService(startServiceIntent);
+            }
+            else
+                StartService(startServiceIntent);
             base.OnCreate(savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             LoadApplication(new App());
-
         }
     }
 }

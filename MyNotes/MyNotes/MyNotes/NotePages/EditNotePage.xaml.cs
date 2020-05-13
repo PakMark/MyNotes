@@ -1,6 +1,6 @@
 ﻿using System;
 using MyNotes.Models;
-using Plugin.LocalNotifications;
+using Plugin.LocalNotification;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -38,7 +38,7 @@ namespace MyNotes.NotePages
                 newNote.NoteText = noteText.Text;
                 newNote.NotificationTime = notificationTime.Time;
                 newNote.IsNotify = notify.IsChecked;
-                if (!newNote.IsNotify) CrossLocalNotifications.Current.Cancel(newNote.ID);
+                if (!newNote.IsNotify) NotificationCenter.Current.Cancel(newNote.ID);
                 // Сохранение измененной заметки.
                 await database.SaveNoteAsync(newNote);
 
@@ -47,7 +47,7 @@ namespace MyNotes.NotePages
                 EditNoteEvent += page.UpdateNowNotes;
                 // Вызываем событие.
                 EditNoteEvent?.Invoke();
-                DependencyService.Get<IMessage>().ShortAlert("Заметка успешно изменена");
+                DependencyService.Get<IMessage>().ShortAlert("Заметка изменена");
                 await Navigation.PopAsync();
             }
             else

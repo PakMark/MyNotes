@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using MyNotes.Models;
 using MyNotes.Days;
-using Plugin.LocalNotifications;
 
 namespace MyNotes.NotePages
 {
@@ -13,7 +12,7 @@ namespace MyNotes.NotePages
 
     public partial class NotesPage : ContentPage
     {
-        static Dictionary<string, GetTodayNotes> days = new Dictionary<string, GetTodayNotes>()
+        internal static Dictionary<string, GetTodayNotes> days = new Dictionary<string, GetTodayNotes>()
         {
             { "Monday", () => Monday.Database.GetNotesAsync()},
             { "Tuesday", () => Tuesday.Database.GetNotesAsync()},
@@ -28,80 +27,23 @@ namespace MyNotes.NotePages
         {
             InitializeComponent();
             todayLabel.Text = DateTime.Now.DayOfWeek.ToString();
+            // Загружаем сегодняшние заметки.
+            UpdateNowNotes();
         }
-
-        /// <summary>
-        /// Метод генерации уведомлений на устройстве
-        /// </summary>
-        /// <param name="day">День напоминания</param>
-        public static async void CreateSystemNotifications(string day)
-        {
-            List<Note> todayEnabledNotes;
-            List<Note> todayDisabledNotes;
-            string today = DateTime.Now.DayOfWeek.ToString();
-            if (day == today)
-            {
-                var notes = await days[today]();
-                // Получение сегодняшних заметок, о которых нужно напомнить.
-                todayEnabledNotes = notes.OrderBy(X => X.NotificationTime)
-                                         .OrderByDescending(X => X.IsNotify)
-                                         .TakeWhile(X => X.IsNotify == true)
-                                         .ToList();
-
-                // Получение сегодняшних заметок, о которых не нужно напоминать.
-                todayDisabledNotes = notes.Except(todayEnabledNotes)
-                                          .ToList();
-
-                // Создание уведомлений.
-                foreach (var note in todayEnabledNotes)
-                {
-                    // Создание времени уведомления.
-                    DateTime notificationTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month,
-                        DateTime.Now.Day, note.NotificationTime.Hours, note.NotificationTime.Minutes, 0);
-                    // Проверка времени.
-                    if (notificationTime > DateTime.Now)
-                        CrossLocalNotifications.Current.Show("Уведомление MyNotes",
-                            $"{note.FormatTime} {note.NoteText}",
-                            note.ID, notificationTime);
-                }
-
-                // Удаление уведомлений.
-                foreach (var note in todayDisabledNotes)
-                {
-                    CrossLocalNotifications.Current.Cancel(note.ID);
-                }
-                DependencyService.Get<IMessage>().ShortAlert("Уведомления подготовлены");
-                CrossLocalNotifications.Current.Show("Уведомление MyNotes", "Уведомления подготовлены");
-            }
-        }
-
-        /// <summary>
-        /// Список заметок на сегодня
-        /// </summary>
-        List<Note> todayNotes;
 
         /// <summary>
         /// Метод повторного обновления сегодняшних заметок
         /// </summary>
-        public void UpdateNowNotes()
+        public async void UpdateNowNotes()
         {
             string today = DateTime.Now.DayOfWeek.ToString();
             todayLabel.Text = today;
-            GetTodayNotes(today);
-        }
-
-        /// <summary>
-        /// Метод получения сегодняшних заметок
-        /// </summary>
-        /// <param name="today">День недели</param>
-        async void GetTodayNotes(string today)
-        {
             var notes = await days[today]();
             // Получение сегодняшних заметок и передеча в listView.
-            todayNotes = notes.OrderBy(X => X.NotificationTime)
-                              .OrderByDescending(X => X.IsNotify)
-                              .TakeWhile(X => X.IsNotify == true)
-                              .ToList();
+            var todayNotes = notes.OrderBy(x => x.NotificationTime)
+                                  .OrderByDescending(x => x.IsNotify)
+                                  .TakeWhile(x => x.IsNotify == true)
+                                  .ToList();
             listView.ItemsSource = todayNotes;
         }
 
@@ -138,11 +80,6 @@ namespace MyNotes.NotePages
         async private void SundayClicked(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new Days.Sunday());
-        }
-
-        async private void SettingsClicked(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new Days.Settings());
         }
     }
 }

@@ -5,7 +5,7 @@
              Title="Изменение заметки">
     <ContentPage.Content>
         <StackLayout Margin="5">
-            <Entry x:Name="noteText" />
+            <Entry x:Name="noteText" MaxLength="32" />
             <TimePicker x:Name="notificationTime"
                     Format="HH:mm" />
             <StackLayout Orientation="Horizontal" Padding="5">
